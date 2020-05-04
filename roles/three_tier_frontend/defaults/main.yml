@@ -1,0 +1,4 @@
+---
+three_tier_frontend_install_software: true
+
+three_tier_frontend_app_group_name: apps

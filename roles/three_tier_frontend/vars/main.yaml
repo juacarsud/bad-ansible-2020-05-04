@@ -1,0 +1,4 @@
+---
+# RedHat-7
+three_tier_frontend_software_version: >-
+  {{ ansible_distribution }}-{{ ansible_distribution_major_version }}
