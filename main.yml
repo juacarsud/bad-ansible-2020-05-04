@@ -24,37 +24,8 @@
   - three_tier_app
 
 - name: deploy postgres
+  hosts: appdbs
   gather_facts: false
   become: true
-  hosts: appdbs
-  tasks:
-  - name: install progress
-    command: "yum install -y postgresql-server"
-
-  #- name: install postgres
-  #  yum:
-  #    name: postgresql-server
-  #    state: latest
-  - name: enable postgresql at boot
-    service:
-      name: postgresql
-      enabled: yes
-  - name: tell user to finish setting up postgres
-    debug:
-      msg: "Either uncomment the postgres setup or manually login and initialize"
-
- # only run the next 2 tasks once!
-  - name: initilize postgres
-    command: postgresql-setup initdb
-    register: r_postgres_init
-    failed_when: >-
-      r_postgres_init.rc != 0 and
-      r_postgres_init.stdout != 'Data directory is not empty!'
-
-
-#  - name: initilize postgres some more
-#    command: chkconfig postgresql on
-  - name: start postgres
-    service:
-      name: postgresql.service
-      state: started
+  roles:
+  - three_tier_appdb
