@@ -1,0 +1,9 @@
+---
+- name: Common Configuration
+  hosts: all
+  gather_facts: false
+  become: true
+  roles:
+  - three_tier_common
+
+

@@ -1,31 +1,20 @@
 ---
 - name: Common Configuration
   hosts: all
-  gather_facts: false
+  gather_facts: true
   become: true
   roles:
   - three_tier_common
-
-- name: deploy haproxy
-  hosts: frontends,apps
-  gather_facts: true
-  become: true
   tasks:
   - include_role:
       name: three_tier_frontend
     when: >-
       'frontends' in group_names
-
-- name: deploy tomcat
-  hosts: apps
-  gather_facts: false
-  become: true
-  roles:
-  - three_tier_app
-
-- name: deploy postgres
-  hosts: appdbs
-  gather_facts: false
-  become: true
-  roles:
-  - three_tier_appdb
+  - include_role:
+      name: three_tier_app
+    when: >-
+      'apps' in group_names
+  - include_role:
+      name: three_tier_appdb
+    when: >-
+      'appdbs' in group_names

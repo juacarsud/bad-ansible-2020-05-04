@@ -1,0 +1,7 @@
+---
+- name: deploy tomcat
+  hosts: apps
+  gather_facts: false
+  become: true
+  roles:
+  - three_tier_app
