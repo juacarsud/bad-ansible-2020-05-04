@@ -8,13 +8,13 @@
 
 - name: create ansible tomcat directory
   file:
-    path: /usr/share/tomcat/webapps/ROOT
+    path: /var/lib/tomcat/webapps/ROOT
     state: directory
 
 - name: Write webapps/ROOT/index.html
   template:
     src: index.html.j2
-    dest: /usr/share/tomcat/webapps/ROOT/index.html
+    dest: /var/lib/tomcat/webapps/ROOT/index.html
     mode: 0644
 
 - name: start tomcat
@@ -25,13 +25,13 @@
 
 - name: create ansible tomcat directory
   file:
-    path: /usr/share/tomcat/webapps/ansible
+    path: /var/lib/tomcat/webapps/ansible
     state: directory
 
 - name: copy static index.html to tomcat webapps/ansible/index.html
   template:
     src: index.html.j2
-    dest: /usr/share/tomcat/webapps/ansible/index.html
+    dest: /var/lib/tomcat/webapps/ansible/index.html
 
 - name: enable apache httpd at boot
   service:
