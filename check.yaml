@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Run yamllint
+    command: yamllint {{ playbook_dir }}
+    changed_when: false
+
+  - name: Run ansible-lint
+    command: ansible-lint
+    args:
+      chdir: "{{ playbook_dir }}"
+    changed_when: false
