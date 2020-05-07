@@ -21,7 +21,7 @@
   service:
     name: tomcat
     state: started
-    enabled: yes
+    enabled: true
 
 - name: create ansible tomcat directory
   file:
@@ -36,5 +36,5 @@
 - name: enable apache httpd at boot
   service:
     name: httpd
-    enabled: yes
+    enabled: true
     state: started
