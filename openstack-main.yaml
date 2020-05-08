@@ -8,6 +8,24 @@
       cloud: ospcloud
     register: r_os_server_info
 
+  - name: Start servers
+    os_server_action:
+      action: start
+      server: "{{ item.name }}"
+    # Loop over SHUTOFF servers using jmespath query - see: https://jmespath.org/
+    loop: >-
+      {{ r_os_server_info | json_query("openstack_servers[?status=='SHUTOFF'].name") }}
+    loop_control:
+      label: "{{ item.name }}"
+
+  - name: Wait for hosts respond port 22
+    wait_for:
+      host: "{{ item.public_v4 }}"
+      port: 22
+    loop: "{{ r_os_server_info.openstack_servers }}"
+    loop_control:
+      label: "{{ item.name }}"
+
   - name: Add hosts
     add_host:
       name: "{{ item.name }}"
@@ -19,5 +37,20 @@
     loop: "{{ r_os_server_info.openstack_servers }}"
     loop_control:
       label: "{{ item.name }}"
+
+- name: Check servers are available
+  hosts: apps:appdbs:frontends
+  gather_facts: false
+  tasks:
+  - name: Wait for connection to hosts
+    wait_for_connection:
+      timeout: 600
+
+  - name: Ping hosts
+    ping: {}
+    retries: 10
+    delay: 5
+    register: r_ping
+    until: not r_ping.failed
 
 - import_playbook: main.yml
