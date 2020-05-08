@@ -11,12 +11,12 @@
   - name: Start servers
     os_server_action:
       action: start
-      server: "{{ item.name }}"
+      server: "{{ item }}"
     # Loop over SHUTOFF servers using jmespath query - see: https://jmespath.org/
     loop: >-
       {{ r_os_server_info | json_query("openstack_servers[?status=='SHUTOFF'].name") }}
     loop_control:
-      label: "{{ item.name }}"
+      label: "{{ item }}"
 
   - name: Wait for hosts respond port 22
     wait_for:
