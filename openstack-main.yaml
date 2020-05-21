@@ -5,7 +5,7 @@
   tasks:
   - name: Get openstack servers
     os_server_info:
-      cloud: ospcloud
+      cloud: openstack
     register: r_os_server_info
 
   - name: Start servers
@@ -32,6 +32,7 @@
       ansible_host: "{{ item.public_v4 }}"
       ansible_user: cloud-user
       ansible_ssh_private_key_file: ~/.ssh/test_id_rsa
+      ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
       groups:
       - "{{ item.metadata.group }}"
     loop: "{{ r_os_server_info.openstack_servers }}"

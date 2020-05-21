@@ -1,6 +1,6 @@
 ---
 - name: Common Configuration
-  hosts: all
+  hosts: apps:frontends:appdbs
   gather_facts: true
   become: true
   roles:
