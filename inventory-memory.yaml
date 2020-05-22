@@ -13,6 +13,10 @@
       os_server_info:
         cloud: openstack
       register: result
+      ignore_errors: yes
+
+    - debug:
+        var: result
 
     - name: Add host
       add_host:
