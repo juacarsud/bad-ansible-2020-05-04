@@ -28,24 +28,30 @@
 
   - name: Add hosts
     add_host:
-      name: "{{ item.name }}"
-      ansible_host: "{{ item.public_v4 }}"
+      name: "{{ _server.name }}"
+      ansible_host: "{{ _server.accessIPv4 }}"
       ansible_user: cloud-user
       ansible_ssh_private_key_file: ~/.ssh/test_id_rsa
-      ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
+#      ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
       groups:
-      - "{{ item.metadata.group }}"
+      - "{{ _server.metadata.group | default('ungrouped') }}"
     loop: "{{ r_os_server_info.openstack_servers }}"
     loop_control:
-      label: "{{ item.name }}"
+      loop_var: _server
+      label: "{{ _server.name }}"
+    changed_when: true
+    register: memory_inventory
+
+  - debug:
+      var: memory_inventory 
 
 - name: Check servers are available
   hosts: apps:appdbs:frontends
   gather_facts: false
   tasks:
-  - name: Wait for connection to hosts
-    wait_for_connection:
-      timeout: 600
+          #  - name: Wait for connection to hosts
+          #wait_for_connection:
+          # timeout: 600
 
   - name: Ping hosts
     ping: {}
@@ -54,4 +60,4 @@
     register: r_ping
     until: not r_ping.failed
 
-- import_playbook: main.yml
+  - import_playbook: main.yml
