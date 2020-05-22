@@ -2,6 +2,13 @@
 - name: In-Memory inventory playbook
   hosts: localhost
   tasks:
+    - name: show user id
+      command: id
+      register: show_user
+    
+    - debug:
+        var: show_user
+
     - name: Fetch Instance Info
       os_server_info:
         cloud: openstack
