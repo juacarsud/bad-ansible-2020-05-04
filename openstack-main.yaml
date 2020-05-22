@@ -60,4 +60,4 @@
     register: r_ping
     until: not r_ping.failed
 
-  - import_playbook: main.yml
+- import_playbook: main.yml
